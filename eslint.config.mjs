@@ -28,7 +28,9 @@ export default [
       semi: ['error', 'always'],
       quotes: ['error', 'single'],
       'react/display-name': 'off',
-      'react/prop-types': 'off'
+      'react/prop-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-require-imports': 'off'
     },
   },
   { ignores: ['dist/'] },
