@@ -3,8 +3,8 @@ import { RequestPlugin } from '../types/index';
 const PickDataPlugin: RequestPlugin = () => {
   return {
     name: 'pick-data-plugin',
-    beforeRequest(config) {
-      return config;
+    beforeResponse(res) {
+      return res?.data ?? res;
     }
   };
 };

@@ -18,70 +18,81 @@ class RsRequest {
 
   setupPlugins() {
     if (!this.plugins.length) return;
-    
-    this.instance.interceptors.request.use((config) => {
-      this.plugins.forEach((plugin) => {
-        if (plugin?.beforeRequest) {
-          config = plugin.beforeRequest(config) ?? config;
-        } 
-      });
-      return config;
-    }, (err) => {
-      this.plugins.forEach(plugin => {
-        if (plugin?.requestCatch) {
-          err = plugin.requestCatch(err);
-        }
-      });
-      return Promise.reject(err);
-    });
 
-    this.instance.interceptors.response.use((config) => {
-      this.plugins.forEach((plugin) => {
-        if (plugin?.beforeResponse) {
-          config = plugin.beforeResponse(config) ?? config;
-        } 
-      });
-      return config;
-    }, (err) => {
-      this.plugins.forEach(plugin => {
-        if (plugin?.responseCatch) {
-          err = plugin.responseCatch(err);
-        }
-      });
-      return Promise.reject(err);
-    });
+    this.instance.interceptors.request.use(
+      (config) => {
+        this.plugins.forEach((plugin) => {
+          if (plugin?.beforeRequest) {
+            config = plugin.beforeRequest(config) ?? config;
+          }
+        });
+        return config;
+      },
+      (err) => {
+        console.log(err);
+        this.plugins.forEach((plugin) => {
+          if (plugin?.requestCatch) {
+            err = plugin.requestCatch(err);
+          }
+        });
+        return Promise.reject(err);
+      },
+    );
+
+    this.instance.interceptors.response.use(
+      (config) => {
+        this.plugins.forEach((plugin) => {
+          if (plugin?.beforeResponse) {
+            config = plugin.beforeResponse(config) ?? config;
+          }
+        });
+        return config;
+      },
+      (err) => {
+        this.plugins.forEach((plugin) => {
+          if (plugin?.responseCatch) {
+            err = plugin.responseCatch(err);
+          }
+        });
+        return err;
+      },
+    );
+  }
+
+  getPluginList() {
+    return this.plugins;
   }
 
   get(config: AxiosRequestConfig) {
     return this.instance.request({
       method: 'GET',
-      ...config
+      ...config,
     });
   }
 
   post(config: AxiosRequestConfig) {
     return this.instance.request({
       method: 'POST',
-      ...config
+      ...config,
     });
   }
 
   put(config: AxiosRequestConfig) {
     return this.instance.request({
       method: 'PUT',
-      ...config
+      ...config,
     });
   }
 
   delete(config: AxiosRequestConfig) {
     return this.instance.request({
       method: 'DELETE',
-      ...config
+      ...config,
     });
   }
 
   uploadPlugin(name: string) {
-    const index = this.plugins.findIndex(plugin => plugin.name === name);
+    const index = this.plugins.findIndex((plugin) => plugin.name === name);
     if (index !== -1) {
       this.plugins.splice(index, 1);
     }
