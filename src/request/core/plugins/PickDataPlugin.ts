@@ -4,7 +4,10 @@ const PickDataPlugin: RequestPlugin = () => {
   return {
     name: 'pick-data-plugin',
     beforeResponse(res) {
-      return res?.data ?? res;
+      if (res.status === 200) {
+        return res?.data ?? res;
+      }
+      return res;
     }
   };
 };

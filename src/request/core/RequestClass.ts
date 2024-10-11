@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AxiosConfig, RequestPluginReturn } from './types';
 
 class RsRequest {
@@ -59,33 +59,43 @@ class RsRequest {
     );
   }
 
+  request<T = any>(config: AxiosRequestConfig): Promise<T> {
+    return new Promise((resolve, reject) => {
+      this.instance.request<any, AxiosResponse<Response>>(config).then((res) => {
+        return resolve(res as unknown as Promise<T>);
+      }).catch((err) => {
+        return reject(err);
+      });
+    });
+  }
+
   getPluginList() {
     return this.plugins;
   }
 
-  get(config: AxiosRequestConfig) {
-    return this.instance.request({
+  get<T = any>(config: AxiosRequestConfig) {
+    return this.request<T>({
       method: 'GET',
       ...config,
     });
   }
 
-  post(config: AxiosRequestConfig) {
-    return this.instance.request({
+  post<T = any>(config: AxiosRequestConfig) {
+    return this.request<T>({
       method: 'POST',
       ...config,
     });
   }
 
-  put(config: AxiosRequestConfig) {
-    return this.instance.request({
+  put<T = any>(config: AxiosRequestConfig) {
+    return this.request<T>({
       method: 'PUT',
       ...config,
     });
   }
 
-  delete(config: AxiosRequestConfig) {
-    return this.instance.request({
+  delete<T = any>(config: AxiosRequestConfig) {
+    return this.request<T>({
       method: 'DELETE',
       ...config,
     });

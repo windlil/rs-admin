@@ -3,7 +3,7 @@ import AbortPlugin from './core/plugins/AbortPlugin';
 import PickDataPlugin from './core/plugins/PickDataPlugin';
 
 const request = new RsRequest({
-  baseURL: 'https://jsonplaceholder.typicode.com',
+  baseURL: 'http://localhost:8001',
   plugins: [AbortPlugin(), PickDataPlugin()]
 });
 
