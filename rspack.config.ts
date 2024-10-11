@@ -2,13 +2,15 @@ import { defineConfig } from '@rspack/cli';
 import { rspack } from '@rspack/core';
 import * as RefreshPlugin from '@rspack/plugin-react-refresh';
 import { resolve } from 'path';
+import devConfig from './config/rspack.config.dev';
+import prodConfig from './config/rspack.config.prod';
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === 'dev';
 
 // Target browsers, see: https://github.com/browserslist/browserslist
 const targets = ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'];
 
-export default defineConfig({
+let RspackConfig = defineConfig({
   context: __dirname,
   entry: {
     main: './src/main.tsx',
@@ -20,7 +22,26 @@ export default defineConfig({
     },
   },
   module: {
+    parser: {
+      'css/auto': {
+        namedExports: false,
+      },
+    },
     rules: [
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'less-loader',
+          },
+        ],
+        type: 'css/auto',
+      },
+      {
+        test: /\.css$/,
+        use: ['postcss-loader'],
+        type: 'css',
+      },
       {
         test: /\.svg$/,
         type: 'asset',
@@ -49,11 +70,6 @@ export default defineConfig({
           },
         ],
       },
-      {
-        test: /\.css$/,
-        use: ['postcss-loader'],
-        type: 'css',
-      },
     ],
   },
   plugins: [
@@ -62,15 +78,16 @@ export default defineConfig({
     }),
     isDev ? new RefreshPlugin() : null,
   ].filter(Boolean),
-  optimization: {
-    minimizer: [
-      new rspack.SwcJsMinimizerRspackPlugin(),
-      new rspack.LightningCssMinimizerRspackPlugin({
-        minimizerOptions: { targets },
-      }),
-    ],
-  },
-  devServer: {
-    historyApiFallback: true,
+  experiments: {
+    css: true
   },
 });
+
+if (isDev) {
+  RspackConfig = { ...RspackConfig, ...devConfig  };
+} else {
+  RspackConfig = { ...RspackConfig, ...prodConfig  };
+}
+
+
+export default RspackConfig;

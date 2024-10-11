@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.login-bg-gradient-custom {
+  background-image: linear-gradient(to top, #f6e0d4, #ef8d84);
+}
+
+
 html, body, #root {
   width: 100%;
   height: 100%;

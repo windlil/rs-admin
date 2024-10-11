@@ -1,3 +1,32 @@
 .login {
-  box-shadow: 0 0 12px rgb(13, 13, 13);
+  box-shadow: 0 0 12px #0d0d0d;
 }
+
+.moveRight {
+  animation: moveRight 0.8s ease-in-out forwards; 
+}
+
+.moveLeft {
+  animation: moveLeft 0.8s ease-in-out forwards; 
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(-600px); /* 初始位置 */
+  }
+  100% {
+    transform: translateX(0); /* 目标位置 */
+  }
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(1000px); /* 初始位置 */
+  }
+  100% {
+    transform: translateX(0); /* 目标位置 */
+  }
+}
+
+
+

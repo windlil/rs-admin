@@ -1,5 +1,18 @@
+import request from '@/request';
+import { useCallback } from 'react';
+
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+
+  const get = useCallback(async () => {
+    const response = await request.get({
+      url: '/posts/1'
+    });
+    console.log(response);
+  }, []);
+
+  return <div>
+    <button onClick={get}>GET</button>
+  </div>;
 };
 
 export default Dashboard;
