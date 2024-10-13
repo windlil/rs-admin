@@ -12,4 +12,27 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
+  color: #c8c8c8;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 200ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 200ms ease-out;
 }
